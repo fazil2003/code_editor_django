@@ -1,0 +1,1 @@
+web: gunicorn Editor.wsgi

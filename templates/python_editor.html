@@ -1,0 +1,272 @@
+<!-- Web Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700&display=swap" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+    function save_file(){
+    var content=document.getElementById('inputfield').value;
+    var filename=document.getElementById('filename').value;
+    var data=content;
+    const textToBLOB = new Blob([data], { type: 'text/plain' });
+        const sFileName = filename;	   // The file to save the data.
+
+        let newLink = document.createElement("a");
+        newLink.download = sFileName;
+
+        if (window.webkitURL != null) {
+            newLink.href = window.webkitURL.createObjectURL(textToBLOB);
+        }
+        else {
+            newLink.href = window.URL.createObjectURL(textToBLOB);
+            newLink.style.display = "none";
+            document.body.appendChild(newLink);
+        }
+
+        newLink.click(); 
+
+}
+
+function change_url(){
+	var loc=document.getElementById("select").value;
+	location.href=loc;
+}
+</script>
+
+<div class='header'>
+    <span id='title'>Code Editor</span>
+    <button onclick="location.href='/code/python'" class='top_btn active-btn' id='code_python'>Python</button>
+
+    <input type='text' placeholder='File name' id='filename' class='top_btn' value='file.py'/>
+    <button onclick='save_file()' class='top_btn' id='code_save'>Save</button>
+</div>
+
+
+<div id='select'>Python</div>
+
+
+<div class='container'>
+    <div class='input'>
+        <form id='form'>
+            {% csrf_token %}
+            <textarea id='inputfield' ># This program prints Hello, world!
+
+print('Hello, world!')</textarea>
+            <button type='submit' class='top_btn' id='code_output'>Run</button>
+        </form>        
+    </div>
+    
+    <div class='output' id='outputfield'>
+        
+    </div>
+</div>
+
+<style>
+    :root{
+        /* --font-color: #090821;
+        --bg-color: #DAE5ED;
+        --afont-color: #fc2f70;
+        --font-color: #f8f8f2;
+        --bg-color: #282a36; */
+        --font-color: #3cefff;
+        --background-color:#282a36;
+        --white-color:white;
+        --font-family: 'Roboto Mono', "SF Mono", "Lucida Console", Monaco, monospace;
+        --font-size:20px;
+    }
+    
+    html{
+        background:var(--background-color);
+        color:var(--font-color);
+        font-family: var(--font-family);
+        font-size:var(--font-size);
+    }
+    
+    .header{
+        top:0px;
+        left:0;
+        position:fixed;
+        width:100%;
+        height:70px;
+        font-weight: bold;
+        background:var(--background-color);
+        z-index:2;
+    }
+    .header #title{
+        top:10px;
+        left:50px;
+        position: relative;
+        font-size:30px;
+    }
+    
+    .top_btn{
+        padding:10px;
+        border-radius:5px;
+        width:150px;
+        background:var(--background-color);
+        border:none;
+        outline: none;
+        font-family: var(--font-family);
+        color:var(--font-color);
+        font-size: var(--font-size);
+    
+        position:relative;
+        left:100px;
+        top:10px;
+    }
+    
+    .top_btn:hover{
+        color: var(--background-color);
+        background: var(--font-color);
+        
+    }
+    
+    
+    .active-btn{
+        border:1px solid var(--font-color);
+    }
+    
+    .container{
+        margin-top:70px;
+        height:calc(100vh - 80px);
+        width:100%;
+    }
+    .input{
+        width:50%;
+        float:left;
+        height: calc(100vh - 70px);
+    }
+    #inputfield{
+        color:var(--white-color);
+        font-size:var(--font-size);
+        border:none;
+        outline:none;
+        background: transparent;
+        width:100%;
+        height:100%;
+        padding:10px;
+        line-height:35px;
+    }
+    .output{
+        /*2px + padding*/
+        width:calc(50% - 22px);
+        float:right;
+        padding:10px;
+        height: calc(100vh - 70px);
+        border-left: 2px dashed var(--font-color);
+    }
+    
+    #code_output{
+        left:80%;
+        position:fixed;
+        top:10px;
+        background: var(--font-color);
+        color:var(--background-color);
+        z-index:2;
+    }
+    
+    #code_output:active{
+        transform:scale(0.95);
+    }
+    #filename{
+        color:dodgerblue;
+        border:1px solid white;
+        background:white;
+        width:250px;
+    }
+    #filename:focus{
+        color:black;
+        background:white;
+    }
+    
+    #select{
+        display:none;
+    }
+    
+    @media screen and (max-width:980px){
+    
+    .header #title{
+        display:none;
+    }
+    
+    .top_btn{
+        display:none;
+    }
+    .input{
+        float:top;
+        width:100%;
+        height:50%;
+    
+    }
+    
+    #inputfield{
+        height:90%;
+        font-size:18px;
+    }
+    
+    .output{
+        float:bottom;
+        width:calc(100% - 20px);
+        height:45%;
+        padding:10px;
+        border-left:none;
+        border-top: 2px dashed var(--font-color);
+        font-size:18px;
+    }
+    
+    #code_output{
+        left:230px;
+        position:fixed;
+        display:block;
+        font-size:18px;
+        width:70px;
+    }
+    
+    #select{
+        top:10px;
+        left:10px;
+        width:100px;
+        position:fixed;
+        z-index:2;
+        display:block;
+        color:var(--font-color);
+        background:var(--background-color);
+        font-size:var(--font-size);
+        padding:10px;
+        border:none;
+        outline:none;
+        font-family:var(--font-family);
+    }
+    #code_save{
+        position:fixed;
+        top:10px;
+        left:140px;
+        display:block;
+        z-index:2;
+        width:70px;
+    }
+    }
+</style>
+
+<!-- <img src='http://alloask.com/image/logo.png' /> -->
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type='text/javascript' >
+    $(document).on('submit','#form',function(e){
+        e.preventDefault();
+
+        $.ajax({
+            type:'POST',
+            url:'/run/python/',
+            data:{
+                code:$('#inputfield').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success:function(response){
+                document.getElementById('outputfield').innerHTML=response;
+            }
+        });
+    });
+
+</script>
